@@ -6,8 +6,8 @@ const Campground = require('../models/campground');
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb://localhost:27017/yelp-camp');
-  console.log("connected")
+    await mongoose.connect('mongodb://localhost:27017/yelp-camp');
+    console.log("connected")
 }
 
 
@@ -20,17 +20,26 @@ const seedDB = async () => {
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 20) + 10;
         const camp = new Campground({
-            author:'62999dd2335bc4672fad5e85',
+            author: '62999dd2335bc4672fad5e85',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
-            images: [{
-                
-                      url: 'https://res.cloudinary.com/appiness-intereactive-pvt-ltd/image/upload/v1654664469/YelpCamp/j9rg6ogcxquywrs749jr.jpg',
-                      filename: 'YelpCamp/j9rg6ogcxquywrs749jr'
-            }],
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam dolores vero perferendis laudantium, consequuntur voluptatibus nulla architecto, sit soluta esse iure sed labore ipsam a cum nihil atque molestiae deserunt!',
-            price
+            price,
+            geometry: {
+                type: "Point",
+                coordinates: [
+                    cities[random1000].longitude,
+                    cities[random1000].latitude,
+                ]
+            },
+
+            images: [{
+
+                url: 'https://res.cloudinary.com/appiness-intereactive-pvt-ltd/image/upload/v1654664469/YelpCamp/j9rg6ogcxquywrs749jr.jpg',
+                filename: 'YelpCamp/j9rg6ogcxquywrs749jr'
+            }]
         })
+
         await camp.save();
     }
 }
